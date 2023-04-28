@@ -5,6 +5,9 @@ from tkinter import ttk
 from tkinter import *
 import time
 import re
+from email.message import EmailMessage
+import ssl
+import smtplib
 
 LargeFont = ("Verdana", 12)
 
@@ -62,9 +65,9 @@ class Student1(tk.Frame):
         tk.Frame.__init__(self, parent)
         label = tk.Label(self, text="Student1", font = LargeFont)
         label.pack(pady=10,padx=10)
-        button1 = tk.Button(self, text = "Input Email", command = input_email, width = 25, height = 1)
-        button1.pack()
-        button2 = tk.Button(self, text = "Input Student Grades", command = lambda: controller.show_frame(grade), width = 25, height = 1)
+#         button1 = tk.Button(self, text = "Input Email", command = input_email, width = 25, height = 1)
+#         button1.pack()
+        button2 = tk.Button(self, text = "Input Student Grades", command = grade, width = 25, height = 1)
         button2.pack()
         button3 = tk.Button(self, text = "Student Weighted Grade", command = stud_grade, width = 25, height = 1)
         button3.pack()
@@ -78,9 +81,9 @@ class Student2(tk.Frame):
         tk.Frame.__init__(self, parent)
         label = tk.Label(self, text="Student2", font = LargeFont)
         label.pack(pady=10,padx=10)
-        button1 = tk.Button(self, text = "Input Email", command = input_email, width = 25, height = 1)
-        button1.pack()
-        button2 = tk.Button(self, text = "Input Student Grades", command = lambda: controller.show_frame(grade), width = 25, height = 1)
+#         button1 = tk.Button(self, text = "Input Email", command = input_email, width = 25, height = 1)
+#         button1.pack()
+        button2 = tk.Button(self, text = "Input Student Grades", command = grade, width = 25, height = 1)
         button2.pack()
         button3 = tk.Button(self, text = "Student Weighted Grade", command = stud_grade, width = 25, height = 1)
         button3.pack()
@@ -94,9 +97,9 @@ class Student3(tk.Frame):
         tk.Frame.__init__(self, parent)
         label = tk.Label(self, text="Student3", font = LargeFont)
         label.pack(pady=10,padx=10)
-        button1 = tk.Button(self, text = "Input Email", command = input_email, width = 25, height = 1)
-        button1.pack()
-        button2 = tk.Button(self, text = "Input Student Grades", command = lambda: controller.show_frame(grade), width = 25, height = 1)
+#         button1 = tk.Button(self, text = "Input Email", command = input_email, width = 25, height = 1)
+#         button1.pack()
+        button2 = tk.Button(self, text = "Input Student Grades", command = grade, width = 25, height = 1)
         button2.pack()
         button3 = tk.Button(self, text = "Student Weighted Grade", command = stud_grade, width = 25, height = 1)
         button3.pack()
@@ -110,9 +113,9 @@ class Student4(tk.Frame):
         tk.Frame.__init__(self, parent)
         label = tk.Label(self, text="Student4", font = LargeFont)
         label.pack(pady=10,padx=10)
-        button1 = tk.Button(self, text = "Input Email", command = input_email, width = 25, height = 1)
-        button1.pack()
-        button2 = tk.Button(self, text = "Input Student Grades", command = lambda: controller.show_frame(grade), width = 25, height = 1)
+#         button1 = tk.Button(self, text = "Input Email", command = input_email, width = 25, height = 1)
+#         button1.pack()
+        button2 = tk.Button(self, text = "Input Student Grades", command = grade, width = 25, height = 1)
         button2.pack()
         button3 = tk.Button(self, text = "Student Weighted Grade", command = stud_grade, width = 25, height = 1)
         button3.pack()
@@ -126,9 +129,9 @@ class Student5(tk.Frame):
         tk.Frame.__init__(self, parent)
         label = tk.Label(self, text="Student5", font = LargeFont)
         label.pack(pady=10,padx=10)
-        button1 = tk.Button(self, text = "Input Email", command = input_email, width = 25, height = 1)
-        button1.pack()
-        button2 = tk.Button(self, text = "Input Student Grades", command = lambda: controller.show_frame(grade), width = 25, height = 1)
+#         button1 = tk.Button(self, text = "Input Email", command = input_email, width = 25, height = 1)
+#         button1.pack()
+        button2 = tk.Button(self, text = "Input Student Grades", command = grade, width = 25, height = 1)
         button2.pack()
         button3 = tk.Button(self, text = "Student Weighted Grade", command = stud_grade, width = 25, height = 1)
         button3.pack()
@@ -137,68 +140,85 @@ class Student5(tk.Frame):
         button5 = tk.Button(self, text = "Main Menu",command = lambda: controller.show_frame(MainMenu), width = 25, height = 1)
         button5.pack()
         
-class grade(tk.Frame):
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Enter Grades", font = LargeFont)
-        label.pack(pady=10,padx=10)
+def grade():
+    grade_list = []
+    grade1 = tkinter.simpledialog.askstring(title = "Grade", prompt = "Enter Grade1")
+    grade_list.append(grade1)
+    grade2 = tkinter.simpledialog.askstring(title = "Grade", prompt = "Enter Grade2")
+    grade_list.append(grade2)
+    grade3 = tkinter.simpledialog.askstring(title = "Grade", prompt = "Enter Grade3")
+    grade_list.append(grade3)
+    grade4 = tkinter.simpledialog.askstring(title = "Grade", prompt = "Enter Grade4")
+    grade_list.append(grade4)
+    grade5 = tkinter.simpledialog.askstring(title = "Grade", prompt = "Enter Grade5")
+    grade_list.append(grade5)
+    for i in range(0, len(grade_list)):
+        grade_list[i] = float(grade_list[i])
+    stud_grade(grade_list)
+    
+    
 
-def input_email():
-    email = tkinter.simpledialog.askstring(title= "email", prompt = "Please enter your email to receive alerts: ")
-    print("Thank You", email)
-    tkinter.messagebox.showinfo("Message", "Received email")
-    check_email(email)
+# def input_email():
+#     email = tkinter.simpledialog.askstring(title= "email", prompt = "Please enter your email to receive alerts: ")
+#     print("Thank You", email)
+#     tkinter.messagebox.showinfo("Message", "Received email")
+#     check_email(email)
 
 def check_email(email):
     regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
     if (re.fullmatch(regex, email)):
         tkinter.messagebox.showinfo("Message", "Email Valid")
         print("Valid Email")
+        
  
     else:
         tkinter.messagebox.showinfo("Message", "Email InValid")
         print("Invalid Email")
 
-    
-    
-
-def stud_grade():
-sumOfallGrades = grade1+grade2+grade3+grade4+grade5
-average = sumOfallGrades/5
 
 
-def status():	
-if average >= 90:
-        print(name + "is passing with an letter grade of A")
+def stud_grade(grade_list):
+    Sum = sum(grade_list)
+    average = Sum/5
+    tkinter.messagebox.showinfo("Average Grade", average)
+    status(average)
+
+def status(average):
+    if average >= 90:
+        print("Student is passing with an letter grade of A")
     elif average >= 80:
-        print(name + "is passing with an letter grade of B")
+        print("Student is passing with an letter grade of B")
     elif average >= 70:
-        print("*CAUTION* " + name + "is passing with an letter grade of C")
+        print("*CAUTION* student is passing with an letter grade of C")
     elif average >= 60:
-        print("*CAUTION* " + name + "is passing with an letter grade of D, but will not recieve credit points from the University")
+        print("*CAUTION* student is passing with an letter grade of D, but will not recieve credit points from the University")
     else:
-        print("*CAUTION* " + "The student " + name + " is failing the class, We are sending an email to Alert you now")
-	email_sender = "codefriendlyvsu@gmail.com"
-	email_password ="ydjhkctorziqkfnz"
-	email_reciever = "darienwalker121@outlook.com"
-	student1 = "Nichalos"
-	
-	subject = "STUDENT ACADEMIC WARNING"
-	body = """
-	NOTICE: Your Student """ + student1 """is currently in Academic Warning status Please email you student and schedule an appointment. 
-	
-	"""
-	em = EmailMessage()
-	em["From"] = email_sender 
-	em['To'] = email_reciever
-	em['Subject'] = subject 
-	em.set_content(body)
-	
-	context = ssl.create_default_context()
-	
-	with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
-		smtp.login(email_sender, email_password)
-		smtp.sendmail(email_sender, email_reciever, em.as_string())
+        print("*CAUTION* The student is failing the class, We are sending an email to Alert you now")
+        email = tkinter.simpledialog.askstring(title= "email", prompt = "Please enter your email to receive alerts: ")
+        print("Thank You", email)
+        tkinter.messagebox.showinfo("Message", "Received email")
+        check_email(email)
+        
+        email_sender = "codefriendlyvsu@gmail.com"
+        email_password ="ydjhkctorziqkfnz"
+        email_reciever = email
+
+        subject = "STUDENT ACADEMIC WARNING"
+        body = """NOTICE: Your Student is currently in Academic Warning status Please email you student and schedule an appointment."""
+        
+        em = EmailMessage()
+        em["From"] = email_sender 
+        em['To'] = email_reciever
+        em['Subject'] = subject 
+        em.set_content(body)
+
+        context = ssl.create_default_context()
+
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
+            smtp.login(email_sender, email_password)
+            smtp.sendmail(email_sender, email_reciever, em.as_string())
+        print("Email sent")
+
 
 
     
@@ -206,6 +226,9 @@ if average >= 90:
     
 app = PageContainer()
 app.mainloop() 
+
+
+    
 
 
     
